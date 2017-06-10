@@ -1,4 +1,4 @@
-function point = intersectLineEdge(line, edge)
+function point = intersectLineEdge(line, edge, varargin)
 %INTERSECTLINEEDGE Return intersection between a line and an edge
 %
 %   P = intersectLineEdge(LINE, EDGE);
@@ -28,6 +28,13 @@ function point = intersectLineEdge(line, edge)
 %   HISTORY
 %   19/02/2004: add support for multiple lines.
 %   08/03/2007: update doc
+%   10/06/2017: R Gardner add tolerance arg
+
+% extract computation tolerance
+tol = 1e-14;
+if ~isempty(varargin)
+    tol = varargin{1};
+end
 
 x0 =  line(:,1);
 y0 =  line(:,2);
@@ -44,10 +51,10 @@ N1 = length(x0);
 N2 = length(x1);
 
 % indices of parallel lines
-par = abs(dx1.*dy2-dx2.*dy1)<1e-14;
+par = abs(dx1.*dy2-dx2.*dy1)<tol;
 
 % indices of colinear lines
-col = abs((x1-x0).*dy1-(y1-y0).*dx1)<1e-14 & par ;
+col = abs((x1-x0).*dy1-(y1-y0).*dx1)<tol & par ;
 
 xi(col) = Inf;
 yi(col) = Inf;
@@ -75,5 +82,5 @@ elseif N2==1
 end
 
 point   = [xi' yi'];
-out     = find(~isPointOnEdge(point, edge));
+out     = find(~isPointOnEdge(point, edge, tol));
 point(out, :) = repmat([NaN NaN], [length(out) 1]);
