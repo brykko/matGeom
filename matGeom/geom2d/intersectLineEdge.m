@@ -16,6 +16,10 @@ function point = intersectLineEdge(line, edge, varargin)
 %   If one of the input has N rows and the other 1 row, the result is a
 %   [N*2] array.
 %
+%   P = intersectLineEdge(LINE, EDGE, TOL);
+%   specifies an optional tolerance value TOL. The tolerance is given as a
+%   fraction of the norm of the edge direction vector. Default is 1e-14. 
+%
 %   See also:
 %   lines2d, edges2d, intersectEdges, intersectLines
 %
